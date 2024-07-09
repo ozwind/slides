@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- https://www.favicon.cc/ -->
+    <meta charset="utf-8">
+    <title>Slides</title>
+    <link rel="shortcut icon" type="image/x-icon" href="icons/slideshow.ico">
+    <link rel="stylesheet" href="slides.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="data.js" charset="utf-8"></script>
+    <script src="slides.js"></script>
+    <script>
+        $(function() {
+            init();
+        });
+    </script>
+</head>
+
+<body>
+    <div id="top">
+        <div id="header">
+            <div class="row">
+                <!-- https://unicode.org/charts/ -->
+                <button id="start" title="Show images, use arrow keys for next/previous, ESC to stop">&#x25B6;</button>
+                <span id="seconds" title="Click to set number of seconds for each image (1-9)">3</span>
+                <div id="auto">
+                    <label class="switch">
+                        <input type="checkbox" id="cbAuto" checked>
+                        <span class="slider round"></span>
+                    </label>
+                    <div id="autoText">Slideshow</div>
+                </div>
+                <div id="sound">
+                    <label class="switch">
+                        <input type="checkbox" id="cbSound" checked>
+                        <span class="slider round"></span>
+                    </label>
+                    <div id="soundText">Audio</div>
+                </div>
+                <select id="tunes" class="picklist"></select>
+            </div>
+            <div>
+                <div id="title">&nbsp;</div>
+            </div>
+        </div>
+
+        <div id="imgContainer">
+            <img id="image" src="">
+        </div>
+    </div>
+</body>
+</html>
