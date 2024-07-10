@@ -29,6 +29,8 @@ function init() {
 
     $(START).on('click', function() {
         $(START).blur();  // Remove focus
+        $(AUTO).prop('checked', true);
+        $('#imgContainer')[0].requestFullscreen();
         start();
     });
 
@@ -64,9 +66,6 @@ function init() {
     });
 
     $(document).keydown(function(event) {
-        if (event.key === "Escape" || event.keyCode === 27) {
-            stopShow();
-        }
         if (event.key === "ArrowLeft" || event.keyCode === 37) {
             stopAuto();
             advance(false);
@@ -74,6 +73,12 @@ function init() {
         else if (event.key === "ArrowRight" || event.keyCode === 39) {
             stopAuto();
             advance(true);
+        }
+    });
+
+    $(document).on('fullscreenchange', function() {
+        if (!document.fullscreen) {
+            stopShow();
         }
     });
 
@@ -178,11 +183,12 @@ function getSeconds() {
 }
                      
 function setContainerSize() {
+    const MARGIN = 16;
     let browserWidth = $(window).width();
     let browserHeight = $(window).height();
-    let $header = $('#header');
-    containerWidth = browserWidth - 16;
-    containerHeight = browserHeight - $header.height() - 16;
+    containerWidth = browserWidth - MARGIN;
+    containerHeight = browserHeight - $('#header').outerHeight(true)
+        - $('#title').outerHeight(true) - MARGIN;
 }
 
 function isShowing(img) {
@@ -202,11 +208,11 @@ function stopShow() {
     clearInterval(intervalId);
     if (audio) {
         audio.pause();
+        $(SOUND).prop('checked', false);
     }
+    $(AUTO).prop('checked', false);
     intervalId = undefined;
     audio = undefined;
-    setTitle(' ');
-    $(IMG).hide();
 }
 
 function start() {
@@ -254,6 +260,9 @@ function showImage() {
         playMp3();
     };
 
+    if (idxImg === undefined) {
+        idxImg = 0;
+    }
     img.attr("src", IMGS[idxImg].url);
 }
 

@@ -25,7 +25,7 @@ button:hover {
     background-color: #3e8e41;
 }
 
-.row, .row div {
+#header, #header div {
     display: flex;
     padding-right: 10px;
 }
@@ -33,7 +33,7 @@ button:hover {
 #title {
     text-align: center;
     font-size: x-large;
-    padding-bottom: 5px;
+    padding-top: 5px;
     color: wheat;
 }
 
@@ -52,6 +52,10 @@ button:hover {
 #imgContainer img {
     display: block;
     margin: 0 auto;
+}
+
+#release {
+    margin-left: auto;
 }
 
 /* ---- Slider checkbox styling ---- */
