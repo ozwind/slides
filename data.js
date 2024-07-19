@@ -1,264 +1,43 @@
-const TUNES = [
-    "KaifukuSuruKizu",
-    "Powaqqatsi",
-    "GymnopédieNo.1",
-    "Spanish Flea",
-    "The Liberty Bell"
+const MP3S = [
+    {
+        name: "GymnopédieNo.1",
+        info: "Erik Satie, French Composer, 1888"
+    },
+    {
+        name: "Jesu Joy Of Man's Desiring",
+        info: "Johann Sebastian Bach, 1723"
+    },
+    {
+        name: "KaifukuSuruKizu",
+        info: "Lily Chou-Chou, Kill Bill Vol. 1"
+    },
+    {
+        name: "Music Box Dancer",
+        info: "Frank Mills, 1979"
+    },
+    {
+        name: "Ode to Joy",
+        info: "Beethoven 9th symphony, 4th movement, Wendy Carlos, 1971"
+    },
+    {
+        name: "Powaqqatsi",
+        info: "Philip Glass, Truman Show, 1988"
+    },
+    {
+        name: "Spanish Flea",
+        info: "Herb Alpert and the Tijuana Brass, 1966"
+    },
+    {
+        name: "Terms of Endearment",
+        info: "Theme from 1983 movie Terms of Endearment"
+    },
+    {
+        name: "The Liberty Bell",
+        info: "John Philip Sousa, 1893"
+    }
 ];
 
 const IMGS = [
-    {
-        title: "1967 Cliff / Larry",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-5dVfgXH/0/NJz7GpnzKtBfgCm2gbsFfQt9sPVDCDFbVtDM9zS2x/O/196705_chLh.jpg"
-    },
-    {
-        title: "1967 Darryl",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-3zKk4Nh/0/KszhfJsmSbbXkhZrtdjS9grLpRLrvn5NL8TL2RNdG/O/196799_dhBoyScout.jpg"
-    },
-    {
-        title: "1969 Cliff",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-RBwxRdL/0/Lz7v89SnMM7p4mxGqTjxC546Kqzcd3mzLP2WWNqR3/O/196999_ch001.jpg"
-    },
-    {
-        title: "1969 Darryl, Cliff, Larry at Death Valley",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-rhCkVHv/0/LmTj3ZjRX5ZdmMXV5dpLQKgjTqNLpSmpVhXhQKXHx/O/196999_dhchlh02.jpg"
-    },
-    {
-        title: "1969 Larry, Cliff, Darryl halloween",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-hF924jC/0/M76TV3qKH2vZ94sCmKZr4s9SBwb59nckxSTfMvdBP/O/196999_halloween2.jpg"
-    },
-    {
-        title: "1976 Wedding of Darryl and Jan",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-XpbQXv2/0/NCwp3hmJgSDckvSC2zLBcW7FNZZrXs9ct6sctC5jp/O/197605_dh%26jh001.jpg",
-    },
-    {
-        title: "1976 West Anaheim Community Hospital",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-gFGNNzm/0/Kw9fNpMws2kV39Q2v7K3HTGKfhdBNDSnrnVGB4fNV/O/197699_eh%26Ch.jpg"
-    },
-    {
-        title: "1977 Darryl and Michelle",
-        url : "https://photos.smugmug.com/Family/HLH-8mm-film/i-BfjK5VW/0/MWFVGspNWcqcsVC3kmBNgbVFjWnXtnZC3JJ8kdHPk/O/197705_dhMichelle.jpg"
-    },
-    {
-        title: "1978 High School graduation",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-k26Fzqs/0/KqQfphWxrthjZ5VPfctqPrNZH7GwSvRftMX8mBWD9/O/197806_sLhHhEh02.jpg"
-    },
-    {
-        title: "1979 Fraser and Elsie",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-nN675Lc/0/MjSxmcsHcfk3gSBBvNshFVgVWxCNjMsft9jcWngKn/O/197907_sEhFraser.jpg"
-    },
-    {
-        title: "1979 Darryl, Alan, Steve",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-tqDWqBQ/0/M8hZtNdvtCntfRtFJ3W3HbMq3nn9vvvjw8MdZxqP2/O/197999_dhAlanSteve.jpg"
-    },
-    {
-        title: "1979 City of Orange, Anchor Street",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-CQ7hf7x/0/NBRzNJF2QH2kxjcML3CS6jhQbpXnpCJNsfWZ5Qpqt/O/197999_hhFamily01.jpg"
-    },
-    {
-        title: "1980 Cliff's Datsun B-210 in Nevada",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-fvn2HvX/0/MFx6PvzPnQsPSwRbhSdTcqG46SzHPLSQFQ5WMSsJV/O/198001_Valley%20of%20Fire02.jpg"
-    },
-    {
-        title: "1980 City of Orange, Anchor Street",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-FG3RGTp/0/KHdKm7wnD9HXrTHfDxVL56hf5Z8P3rrj4KQw7vWZZ/O/198007_sHewittb02.jpg"
-    },
-    {
-        title: "1981 Darryl, Jan, Michelle, Shawn",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-LVdWHKG/0/NMMJzDrk87grZHLnmC8dJ7fRWgBtQdrgf9t2cSc3h/O/198109_sDhFamily01.jpg"
-    },
-    {
-        title: "1982 City of Orange, Anchor Street",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-c2h5ddm/0/L8ksKWvNKcDjMQrptVVZdXXVjq2FrBXzkGcjMNwxM/O/198203_sHhYard01.jpg"
-    },
-    {
-        title: "1982 City of Orange, Anchor Street",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-BvgtkNt/0/LrcFtpfm4TGmBjc5vrXKh6NTN3h8nBPvvvGg5hP77/O/198203_sHh04.jpg"
-    },
-    {
-        title: "1983 Star Wars family",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-qCphzs2/0/KbWFSKLfpspSR8zR3wVXBPxFtXtkGHrV5PMGTG4NV/O/198310_sDhFamily.jpg"
-    },
-    {
-        title: "1984 family gathering at the Anchor Street home",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-gTFzLDr/0/M9F64Hw3rzNDPsRz8JGpdQMTQDF6MSH3sNXN8j2ZP/O/198412_Hewitt.jpg"
-    },
-    {
-        title: "1985 Bryce Canyon Nation Park, Utah",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-PgNJmhj/0/NhmLWMbK6HRc6mdSmVbMfkGnPH54MC8ZQ3SJ6RN35/O/198506_sEhHhBryce.jpg"
-    },
-    {
-        title: "1985 Bryce Canyon National Park",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-JvB9ZCD/0/LVLqMt6PRV5RzjpTCpCmwpG98WNhMcF3VBPPgZxt5/O/198999_pcdEhHh.jpg"
-    },
-    {
-        title: "1985 Lake Powell",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-7T5RJCC/0/MfRDnBcXjHjWCm5xBG6hvNkVwWHSq3b2DKDqKJtRW/O/198507_sCh01.jpg"
-    },
-    {
-        title: "1985 Larry in Japan",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-8X3z6SM/0/NcGc64MmRC7gz8HV8jrNn3GLZ8pZ6x4Dj79jXZVzg/O/198511_sLhJapan.jpg"
-    },
-    {
-        title: "1985 Jennifer and Cliff at the Anchor Street home",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-BrKjLnd/0/LGZw36wXB5sqZ2z7WVqgsMQnJp5xg5VtPk8WQqRt5/O/198512_nChJennifer01.jpg"
-    },
-    {
-        title: "1985 Jennifer and Cliff's red Nissan Sentra",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-Nsm4Xj7/0/MZQTs7CPV9v9GptV4hWG753fGGhRD3TmPwJ697N7G/O/198599_nJennifer11.jpg"
-    },
-    {
-        title: "1986 Las Vegas wedding",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-rZQ3kCc/0/KfrWrkRnFbfJ82wtQSWLKHvCNKLrXCx6bsBR7fBF5/O/198608_chWedding.jpg"
-    },
-    {
-        title: "1986 Sam, Harry, June, Cliff, Fred, Jim",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-xZ7d8mb/0/NFNMrVFMVWRwPcH65G9fwSxv48Z7qJbzmmHdLbnDL/O/198699_Hewitt01.jpg"
-    },
-    {
-        title: "1988 Cal State Fullerton graduation",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-JbS8B9P/0/Mbq2dBz2gNWtjCzDTXdBwmr2rQwtMmhz7ggJgRcwF/O/198805_nChGraduation02.jpg"
-    },
-    {
-        title: "1988 Taiwan wedding photo",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-kv9bCcr/0/Mct2PJxFS7pqhpFR9vfgFCKPJQwntkbpRr2BQr8Zf/O/198899_pcdChJennifer01.jpg"
-    },
-    {
-        title: "1989 Shawn, Josh, Christy with their grandpa",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-JfDGCdr/0/NNG99WmfSd8mb5wC8wzsN3BsdvBdtR2vCQgSfpqxf/O/198999_hhShawnJoshChristy.jpg"
-    },
-    {
-        title: "1989 Larry with his Fiero sports car",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-CRBPjpV/0/MX3GzmLc6MCTqnTF8NjKSxBDggZ89RM5VjkDDvHpq/O/198999_lhFiero3.jpg"
-    },
-    {
-        title: "1989 Larry with Fraser and Jennifer",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-Q8FDQ7S/0/LWKvmM4TZbcrsrwdFrq7Rb2Z3GdFcX9fzGbGZw6sk/O/198999_lhJennifer01.jpg"
-    },
-    {
-        title: "1990 Norwalk townhouse with Kevin, Mary Jane, Hannah",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-8jVLh7K/0/K8HdtGh5j3G5JqDhmR3Rkqvn9ThnrbSFR2FrwMQtw/O/199099_chKjMj.jpg"
-    },
-    {
-        title: "1990 Kevin with family at the Anchor Street home",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-MbCmrNL/0/M6dxBcP8QDDTQ2HkxbMSzzwZZGZrfsq9FB3Bb9wP7/O/199099_nGroup01.jpg"
-    },
-    {
-        title: "1992 Kevin and Jason",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-8rTvnjw/0/NFHZnFdJzkCF7VWXGc46TwHJ7hBzT2P2QsxBbQTHn/O/199212_kj%26jd006.jpg"
-    },
-    {
-        title: "1993 Kevin and Helle",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-mGwJqDD/0/Mtt4KCdQgG7B9nfgkPpZmVJmzz3RLf3P4hjLLNqjN/O/199399_KevinHelle.jpg"
-    },
-    {
-        title: "1994 Cerritos bike ride with Kevin and Jason",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-tDMv9W5/0/MGWprDG7XZZ4mXjndHfFqNZL5DRSWrkHrvH7VTpFm/O/199499_nCh03.jpg"
-    },
-    {
-        title: "1995 Cerritos Sheraton hotel",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-3zmptJm/0/LXQDvs5Nd9JF7CcZxzwTGc8rHW6XfHmTdfVXRr7Vt/O/199999_nEhDhFamilyKevin.jpg"
-    },
-    {
-        title: "1995 Larry and Jeannette's wedding",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-s5cvv8G/0/KK6Btjpk2gjGqZ3Mnrx7rmJQxRB6Ck97NkKKk4sVX/O/199999_Hewitt065.jpg"
-    },
-    {
-        title: "1997 Kevin and Jason with parents",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-fncCtqW/0/LBPnKLwqmXcTVbH6f9H7MTJxH8wjKPGmWrKqW2TF9/O/199799_Hewitt022.jpg"
-    },
-    {
-        title: "1997 Sam, Harry, Beth, Stan",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-pwZbWmh/0/LV5PCVrM3wdrD8WZWZHD8WbVtS3S389mFn5mXvDpH/O/199999_nHhSamStanBeth.jpg"
-    },
-    {
-        title: "1999 Christy and Helle",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-qm8kvVZ/0/MgwkgLHhZMWwHXQbpKqjWkXvkCB9kQchnQmFjfr8b/O/199999_Christy%26Helle.jpg"
-    },
-    {
-        title: "1999 Helle and Jeannette",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-nnDGmZ8/0/Kp5wKXtknhGgXxdjGw99LfBtnFTZ3vtpthZd3J4d8/O/199999_JeannetteHelle001.jpg"
-    },
-    {
-        title: "1999 Yosemite National Park",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-mbB5KNT/0/Kw8MMq6zC9PcJVKxtXN6GBFKGNQHxRBv3tpZMfHXm/O/199999_nDhChYosemite.jpg"
-    },
-    {
-        title: "2000 Alaska cruise",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-QP2VmB4/0/Kn4dDhJGbd2WRZ5KLBQHsHcCSZbPMftxdHBm3hSjp/O/200008_nChFamily02.jpg"
-    },
-    {
-        title: "2000 Mendenhall Glacier, Juneau, Alaska",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-4KcRrLc/0/Mw2LKk6BLKzJ22GxDB5vJctdh4sVWP3f48rDwxtj2/O/082000_10.jpg"
-    },
-    {
-        title: "2001 Darryl at Joshua Tree",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-J3GzqDK/0/NcX3xtfRSKMqp76WZrC5mxcsBMgwP6XprPHQKppC6/O/200103_dh04.jpg"
-    },
-    {
-        title: "2001 Larry at Joshua Tree",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-wFFDGkV/0/MbkxtBt7kp3jmvPxqK9z6h4s6Mnkg7rsQqQKBDPsR/O/200103_lh.jpg"
-    },
-    {
-        title: "2001 Joshua Tree National Park with Larry and Darryl",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-HVpbjTX/0/MnQNPKrGmRsPJ9m9QkdLhBCVsccjXP3M5D5mHZhTS/O/200103_nDhLh01.jpg"
-    },
-    {
-        title: "2001 cruise",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-2DmHCjS/0/M6VwJ5TnBx2cghkx4tRdBL3f3wvGg4S43bGv4pGWs/O/200103_nDhChJanEh.jpg"
-    },
-    {
-        title: "2001 Avalon, Catalina",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-f2cKLxW/0/Ld4pg6mkNBJbRqpnLwD8ZxPzDKr82VvRJvVKzvtkz/O/200103_nEhDhJan02.jpg"
-    },
-    {
-        title: "2001 Helle and Larry",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-H82hwhx/0/LGckN26996gT6FSXjpBdhLqt98NhW8P5TTWjv7Hg3/O/200107_lhHelle.jpg"
-    },
-    {
-        title: "2001 Cerritos with Kevin, Jason, Larry",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-9vgJjXb/0/Nb94QpZ62q9CP8zvdMnfVNqLz54HkVCX9M5L4Vb7q/O/200107_lhKevinJason01.jpg"
-    },
-    {
-        title: "2002 Larry and cookies",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-WBm2w7N/0/NbpFjPVRrd5ZdtxnWdWrnGWw93gmDBds386jSC5qr/O/lhMay2002.jpg"
-    },
-    {
-        title: "2002 Kevin, Josh, Jason",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-VXLcXVB/0/KStZsDHLsHst6DbSgTXFDkvfJD8VLnzXt2fDt9TZx/O/114-1486_IMG.jpg"
-    },
-    {
-        title: "2002 Kevin feeds fish",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-4r9gTw2/0/MbTqkfptWcrPSNW3nxTNKpZBZp39tTqzVVsWGtnzH/O/Kevin%20Fish.jpg"
-    },
-    {
-        title: "2003 Larry and Darryl with Blue Man",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-XVgphG2/0/KT9qZPGQFjh9kVVTzthzVKVPdjkT6mvgh6VkD3vKf/O/118-1805_IMG.jpg"
-    },
-    {
-        title: "2003 Zion National Park, Kevin is it",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-vkVCrMS/0/LmLKpjsNNc49CHHC23V57MXkq5DTDSCSwVb5Skn4S/O/113-1334_IMG.jpg"
-    },
-    {
-        title: "2005 Meteor Crater, Arizona",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-MPLrpSK/0/Lg2HrrCQkqVVJhJgHL8gHfGVhNDnHK3H6C537fvdC/O/127-2798_IMG.jpg"
-    },
-    {
-        title: "2006 Cerritos Christmas with Darryl's family",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-XJQF6xW/0/KbJfhxpNp5Pg6QpKT4zgM8Xm2xd6hmDhks257Lknw/X4/IMG_0810-X4.jpg"
-    },
-    {
-        title: "2006 Jason, Kevin, Cliff, Jennifer on Christmas day",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-3dwv5bm/0/KPhD2BQvNhBwjm7NwvTFNHhjDfLm2jSdGmr99TQLf/X4/XmasDay06.043-X4.jpg"
-    },
-    {
-        title: "2010 Kobe and Jason",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-c6GbZ9T/0/KFkcBNDCFNfkr3kQ2tSGTdZWQHKt9Bm49ksz9bWMR/X4/IMG_0169-X4.jpg"
-    },
-    {
-        title: "2010 Jason in Beijing, China",
-        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-f9dC4FQ/0/LB5XJSc32GTkB2mpXxPvFDCwgtzRWpcmj37KndC8H/X4/IMG_0261-X4.jpg"
-    },
     {
         title: "2024 Petrified Forest National Park",
         url: "https://photos.smugmug.com/Vacation/Eclipse-2024/i-LDkb3vN/0/LTSKqfk4vh4TXzFktLkxKGGqZbJJM6BJjJJC5vqs4/X4/IMG_5888-X4.jpg"
@@ -306,6 +85,10 @@ const IMGS = [
     {
         title: "2023 Seattle on Jason and Connie's wedding day",
         url: "https://photos.smugmug.com/Family/Wedding-2023/i-zSvx9Qj/0/NDHMnQXXwZRwwdmjgQ3MFjqnTsc7vjGVwnKHLZVzj/X4/IMG_0491-X4.jpg"
+    },
+    {
+        title: "2023 Prasanthi and Sid with Connie and Jason",
+        url: "https://photos.smugmug.com/Family/Wedding-2023/i-2SpkNCQ/0/KPBFtqLHD8KNtk6MjWtKfzRDwfNk2vhFb2P3rqWKt/X4/MAX_1572-X4.jpg"
     },
     {
         title: "2022 Shifen Old Street, Taiwan",
@@ -560,6 +343,14 @@ const IMGS = [
         url: "https://photos.smugmug.com/Vacation/Yosemite-2010/i-82bLbV5/0/MK9s3qn9vPtLhxhqVmW6wp6Mhsh9d22bxCnKLR6Jc/X4/IMG_4238-X4.jpg"
     },
     {
+        title: "2010 Kobe and Jason",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-c6GbZ9T/0/KFkcBNDCFNfkr3kQ2tSGTdZWQHKt9Bm49ksz9bWMR/X4/IMG_0169-X4.jpg"
+    },
+    {
+        title: "2010 Jason in Beijing, China",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-f9dC4FQ/0/LB5XJSc32GTkB2mpXxPvFDCwgtzRWpcmj37KndC8H/X4/IMG_0261-X4.jpg"
+    },
+    {
         title: "2008 Cerritos bike riders",
         url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-hHFLkGf/0/LSwBBMKFzSqrwf3jxjRmGv9SVwSrGgb8jVc8TS6gJ/O/IMG_1332.jpg"
     },
@@ -640,6 +431,14 @@ const IMGS = [
         url: "https://photos.smugmug.com/Vacation/Japan-2006/i-6Tg8dtg/0/LJr8vt6pN2MGBvdGTSZWBGV5m9QrSkxx9vQzCqvkw/O/20060901_23.jpg"
     },
     {
+        title: "2006 Cerritos Christmas with Darryl's family",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-XJQF6xW/0/KbJfhxpNp5Pg6QpKT4zgM8Xm2xd6hmDhks257Lknw/X4/IMG_0810-X4.jpg"
+    },
+    {
+        title: "2006 Jason, Kevin, Cliff, Jennifer on Christmas day",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-3dwv5bm/0/KPhD2BQvNhBwjm7NwvTFNHhjDfLm2jSdGmr99TQLf/X4/XmasDay06.043-X4.jpg"
+    },
+    {
         title: "2005 Simatai Great Wall, China",
         url: "https://photos.smugmug.com/Vacation/China-2005/i-NwHcTFL/0/KZWb9GZdH7SNBZFsbBZb3GS5jQD9Ggh4zXBNZSs3z/O/129-2986_IMG.jpg"
     },
@@ -654,5 +453,241 @@ const IMGS = [
     {
         title: "2005 Terra Cotta Warriors, Xian, China",
         url: "https://photos.smugmug.com/Vacation/China-2005/i-dCrNzj5/0/MqwcPBg6KTMwvMnHvt3gzwVRHG6r6PHXftxCNGMcS/O/130-3046_IMG.jpg"
+    },
+    {
+        title: "2005 Meteor Crater, Arizona",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-MPLrpSK/0/Lg2HrrCQkqVVJhJgHL8gHfGVhNDnHK3H6C537fvdC/O/127-2798_IMG.jpg"
+    },
+    {
+        title: "2003 Larry and Darryl with Blue Man",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-XVgphG2/0/KT9qZPGQFjh9kVVTzthzVKVPdjkT6mvgh6VkD3vKf/O/118-1805_IMG.jpg"
+    },
+    {
+        title: "2003 Zion National Park, Kevin is it",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-vkVCrMS/0/LmLKpjsNNc49CHHC23V57MXkq5DTDSCSwVb5Skn4S/O/113-1334_IMG.jpg"
+    },
+    {
+        title: "2002 Larry and cookies",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-WBm2w7N/0/NbpFjPVRrd5ZdtxnWdWrnGWw93gmDBds386jSC5qr/O/lhMay2002.jpg"
+    },
+    {
+        title: "2002 Kevin, Josh, Jason",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-VXLcXVB/0/KStZsDHLsHst6DbSgTXFDkvfJD8VLnzXt2fDt9TZx/O/114-1486_IMG.jpg"
+    },
+    {
+        title: "2002 Kevin feeds fish",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-4r9gTw2/0/MbTqkfptWcrPSNW3nxTNKpZBZp39tTqzVVsWGtnzH/O/Kevin%20Fish.jpg"
+    },
+    {
+        title: "2001 Darryl at Joshua Tree",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-J3GzqDK/0/NcX3xtfRSKMqp76WZrC5mxcsBMgwP6XprPHQKppC6/O/200103_dh04.jpg"
+    },
+    {
+        title: "2001 Larry at Joshua Tree",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-wFFDGkV/0/MbkxtBt7kp3jmvPxqK9z6h4s6Mnkg7rsQqQKBDPsR/O/200103_lh.jpg"
+    },
+    {
+        title: "2001 Joshua Tree National Park with Larry and Darryl",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-HVpbjTX/0/MnQNPKrGmRsPJ9m9QkdLhBCVsccjXP3M5D5mHZhTS/O/200103_nDhLh01.jpg"
+    },
+    {
+        title: "2001 cruise",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-2DmHCjS/0/M6VwJ5TnBx2cghkx4tRdBL3f3wvGg4S43bGv4pGWs/O/200103_nDhChJanEh.jpg"
+    },
+    {
+        title: "2001 Avalon, Catalina",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-f2cKLxW/0/Ld4pg6mkNBJbRqpnLwD8ZxPzDKr82VvRJvVKzvtkz/O/200103_nEhDhJan02.jpg"
+    },
+    {
+        title: "2001 Helle and Larry",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-H82hwhx/0/LGckN26996gT6FSXjpBdhLqt98NhW8P5TTWjv7Hg3/O/200107_lhHelle.jpg"
+    },
+    {
+        title: "2001 Cerritos with Kevin, Jason, Larry",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-9vgJjXb/0/Nb94QpZ62q9CP8zvdMnfVNqLz54HkVCX9M5L4Vb7q/O/200107_lhKevinJason01.jpg"
+    },
+    {
+        title: "2000 Alaska cruise",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-QP2VmB4/0/Kn4dDhJGbd2WRZ5KLBQHsHcCSZbPMftxdHBm3hSjp/O/200008_nChFamily02.jpg"
+    },
+    {
+        title: "2000 Mendenhall Glacier, Juneau, Alaska",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-4KcRrLc/0/Mw2LKk6BLKzJ22GxDB5vJctdh4sVWP3f48rDwxtj2/O/082000_10.jpg"
+    },
+    {
+        title: "1999 Christy and Helle",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-qm8kvVZ/0/MgwkgLHhZMWwHXQbpKqjWkXvkCB9kQchnQmFjfr8b/O/199999_Christy%26Helle.jpg"
+    },
+    {
+        title: "1999 Helle and Jeannette",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-nnDGmZ8/0/Kp5wKXtknhGgXxdjGw99LfBtnFTZ3vtpthZd3J4d8/O/199999_JeannetteHelle001.jpg"
+    },
+    {
+        title: "1998 Deer Springs trail, Mt. San Jacinto",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-mbB5KNT/0/Kw8MMq6zC9PcJVKxtXN6GBFKGNQHxRBv3tpZMfHXm/O/199999_nDhChYosemite.jpg"
+    },
+    {
+        title: "1997 Kevin and Jason with parents",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-fncCtqW/0/LBPnKLwqmXcTVbH6f9H7MTJxH8wjKPGmWrKqW2TF9/O/199799_Hewitt022.jpg"
+    },
+    {
+        title: "1997 Sam, Harry, Beth, Stan",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-pwZbWmh/0/LV5PCVrM3wdrD8WZWZHD8WbVtS3S389mFn5mXvDpH/O/199999_nHhSamStanBeth.jpg"
+    },
+    {
+        title: "1995 Cerritos Sheraton hotel",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-3zmptJm/0/LXQDvs5Nd9JF7CcZxzwTGc8rHW6XfHmTdfVXRr7Vt/O/199999_nEhDhFamilyKevin.jpg"
+    },
+    {
+        title: "1995 Larry and Jeannette's wedding",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-s5cvv8G/0/KK6Btjpk2gjGqZ3Mnrx7rmJQxRB6Ck97NkKKk4sVX/O/199999_Hewitt065.jpg"
+    },
+    {
+        title: "1994 Cerritos bike ride with Kevin and Jason",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-tDMv9W5/0/MGWprDG7XZZ4mXjndHfFqNZL5DRSWrkHrvH7VTpFm/O/199499_nCh03.jpg"
+    },
+    {
+        title: "1993 Kevin and Helle",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-mGwJqDD/0/Mtt4KCdQgG7B9nfgkPpZmVJmzz3RLf3P4hjLLNqjN/O/199399_KevinHelle.jpg"
+    },
+    {
+        title: "1992 Kevin and Jason",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-8rTvnjw/0/NFHZnFdJzkCF7VWXGc46TwHJ7hBzT2P2QsxBbQTHn/O/199212_kj%26jd006.jpg"
+    },
+    {
+        title: "1990 Norwalk townhouse with Kevin, Mary Jane, Hannah",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-8jVLh7K/0/K8HdtGh5j3G5JqDhmR3Rkqvn9ThnrbSFR2FrwMQtw/O/199099_chKjMj.jpg"
+    },
+    {
+        title: "1990 Kevin with family at the Anchor Street home",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-MbCmrNL/0/M6dxBcP8QDDTQ2HkxbMSzzwZZGZrfsq9FB3Bb9wP7/O/199099_nGroup01.jpg"
+    },
+    {
+        title: "1989 Shawn, Josh, Christy with their grandpa",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-JfDGCdr/0/NNG99WmfSd8mb5wC8wzsN3BsdvBdtR2vCQgSfpqxf/O/198999_hhShawnJoshChristy.jpg"
+    },
+    {
+        title: "1989 Larry with his Fiero sports car",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-CRBPjpV/0/MX3GzmLc6MCTqnTF8NjKSxBDggZ89RM5VjkDDvHpq/O/198999_lhFiero3.jpg"
+    },
+    {
+        title: "1989 Larry with Fraser and Jennifer",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-Q8FDQ7S/0/LWKvmM4TZbcrsrwdFrq7Rb2Z3GdFcX9fzGbGZw6sk/O/198999_lhJennifer01.jpg"
+    },
+    {
+        title: "1988 Cal State Fullerton graduation",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-JbS8B9P/0/Mbq2dBz2gNWtjCzDTXdBwmr2rQwtMmhz7ggJgRcwF/O/198805_nChGraduation02.jpg"
+    },
+    {
+        title: "1988 Taiwan wedding photo",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-kv9bCcr/0/Mct2PJxFS7pqhpFR9vfgFCKPJQwntkbpRr2BQr8Zf/O/198899_pcdChJennifer01.jpg"
+    },
+    {
+        title: "1986 Las Vegas wedding",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-rZQ3kCc/0/KfrWrkRnFbfJ82wtQSWLKHvCNKLrXCx6bsBR7fBF5/O/198608_chWedding.jpg"
+    },
+    {
+        title: "1986 Sam, Harry, June, Cliff, Fred, Jim",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-xZ7d8mb/0/NFNMrVFMVWRwPcH65G9fwSxv48Z7qJbzmmHdLbnDL/O/198699_Hewitt01.jpg"
+    },
+    {
+        title: "1985 Bryce Canyon Nation Park, Utah",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-PgNJmhj/0/NhmLWMbK6HRc6mdSmVbMfkGnPH54MC8ZQ3SJ6RN35/O/198506_sEhHhBryce.jpg"
+    },
+    {
+        title: "1985 Bryce Canyon National Park",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-JvB9ZCD/0/LVLqMt6PRV5RzjpTCpCmwpG98WNhMcF3VBPPgZxt5/O/198999_pcdEhHh.jpg"
+    },
+    {
+        title: "1985 Lake Powell",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-7T5RJCC/0/MfRDnBcXjHjWCm5xBG6hvNkVwWHSq3b2DKDqKJtRW/O/198507_sCh01.jpg"
+    },
+    {
+        title: "1985 Larry in Japan",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-8X3z6SM/0/NcGc64MmRC7gz8HV8jrNn3GLZ8pZ6x4Dj79jXZVzg/O/198511_sLhJapan.jpg"
+    },
+    {
+        title: "1985 Jennifer and Cliff at the Anchor Street home",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-BrKjLnd/0/LGZw36wXB5sqZ2z7WVqgsMQnJp5xg5VtPk8WQqRt5/O/198512_nChJennifer01.jpg"
+    },
+    {
+        title: "1985 Jennifer and Cliff's red Nissan Sentra",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-Nsm4Xj7/0/MZQTs7CPV9v9GptV4hWG753fGGhRD3TmPwJ697N7G/O/198599_nJennifer11.jpg"
+    },
+    {
+        title: "1984 family gathering at the Anchor Street home",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-gTFzLDr/0/M9F64Hw3rzNDPsRz8JGpdQMTQDF6MSH3sNXN8j2ZP/O/198412_Hewitt.jpg"
+    },
+    {
+        title: "1983 Star Wars family",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-qCphzs2/0/KbWFSKLfpspSR8zR3wVXBPxFtXtkGHrV5PMGTG4NV/O/198310_sDhFamily.jpg"
+    },
+    {
+        title: "1982 City of Orange, Anchor Street",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-c2h5ddm/0/L8ksKWvNKcDjMQrptVVZdXXVjq2FrBXzkGcjMNwxM/O/198203_sHhYard01.jpg"
+    },
+    {
+        title: "1982 City of Orange, Anchor Street",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-BvgtkNt/0/LrcFtpfm4TGmBjc5vrXKh6NTN3h8nBPvvvGg5hP77/O/198203_sHh04.jpg"
+    },
+    {
+        title: "1981 Darryl, Jan, Michelle, Shawn",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-LVdWHKG/0/NMMJzDrk87grZHLnmC8dJ7fRWgBtQdrgf9t2cSc3h/O/198109_sDhFamily01.jpg"
+    },
+    {
+        title: "1980 Cliff's Datsun B-210 in Nevada",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-fvn2HvX/0/MFx6PvzPnQsPSwRbhSdTcqG46SzHPLSQFQ5WMSsJV/O/198001_Valley%20of%20Fire02.jpg"
+    },
+    {
+        title: "1980 City of Orange, Anchor Street",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-FG3RGTp/0/KHdKm7wnD9HXrTHfDxVL56hf5Z8P3rrj4KQw7vWZZ/O/198007_sHewittb02.jpg"
+    },
+    {
+        title: "1979 Fraser and Elsie",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-nN675Lc/0/MjSxmcsHcfk3gSBBvNshFVgVWxCNjMsft9jcWngKn/O/197907_sEhFraser.jpg"
+    },
+    {
+        title: "1979 Darryl, Alan, Steve",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-tqDWqBQ/0/M8hZtNdvtCntfRtFJ3W3HbMq3nn9vvvjw8MdZxqP2/O/197999_dhAlanSteve.jpg"
+    },
+    {
+        title: "1979 City of Orange, Anchor Street",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-CQ7hf7x/0/NBRzNJF2QH2kxjcML3CS6jhQbpXnpCJNsfWZ5Qpqt/O/197999_hhFamily01.jpg"
+    },
+    {
+        title: "1976 Wedding of Darryl and Jan",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-XpbQXv2/0/NCwp3hmJgSDckvSC2zLBcW7FNZZrXs9ct6sctC5jp/O/197605_dh%26jh001.jpg",
+    },
+    {
+        title: "1976 West Anaheim Community Hospital",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-gFGNNzm/0/Kw9fNpMws2kV39Q2v7K3HTGKfhdBNDSnrnVGB4fNV/O/197699_eh%26Ch.jpg"
+    },
+    {
+        title: "1977 Darryl and Michelle",
+        url : "https://photos.smugmug.com/Family/HLH-8mm-film/i-BfjK5VW/0/MWFVGspNWcqcsVC3kmBNgbVFjWnXtnZC3JJ8kdHPk/O/197705_dhMichelle.jpg"
+    },
+    {
+        title: "1978 High School graduation",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-k26Fzqs/0/KqQfphWxrthjZ5VPfctqPrNZH7GwSvRftMX8mBWD9/O/197806_sLhHhEh02.jpg"
+    },
+    {
+        title: "1969 Cliff",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-RBwxRdL/0/Lz7v89SnMM7p4mxGqTjxC546Kqzcd3mzLP2WWNqR3/O/196999_ch001.jpg"
+    },
+    {
+        title: "1969 Darryl, Cliff, Larry at Death Valley",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-rhCkVHv/0/LmTj3ZjRX5ZdmMXV5dpLQKgjTqNLpSmpVhXhQKXHx/O/196999_dhchlh02.jpg"
+    },
+    {
+        title: "1969 Larry, Cliff, Darryl halloween",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-hF924jC/0/M76TV3qKH2vZ94sCmKZr4s9SBwb59nckxSTfMvdBP/O/196999_halloween2.jpg"
+    },
+    {
+        title: "1967 Darryl",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-3zKk4Nh/0/KszhfJsmSbbXkhZrtdjS9grLpRLrvn5NL8TL2RNdG/O/196799_dhBoyScout.jpg"
+    },
+    {
+        title: "1967 Cliff / Larry",
+        url: "https://photos.smugmug.com/Family/HLH-8mm-film/i-5dVfgXH/0/NJz7GpnzKtBfgCm2gbsFfQt9sPVDCDFbVtDM9zS2x/O/196705_chLh.jpg"
     }
 ];

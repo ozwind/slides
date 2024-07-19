@@ -1,5 +1,14 @@
 /*
-    Slides project start date: July 2, 2024
+    Slides by Cliff Hewitt, July 2, 2024
+
+    A slideshow of random images and tunes.
+    Keyboard shortcuts:
+
+    'P' Pause / unpause slideshow
+    'A' audio on / off
+    'N' next tune
+    Arrow keys for next / previous image
+    ESC to escape from full screen slide show
 */
 
 const IMG = "#image";
@@ -9,12 +18,11 @@ const SOUND = "#cbSound";
 const SECS = "#seconds";
 const TUNE = "#tunes";
 const PERSIST_SECS = "seconds";
-const PERSIST_AUTO = "auto";
-const PERSIST_SOUND = "sound";
 
-let intervalId;
-let idxImg = undefined;
+let idxMp3s = Array.from({ length: MP3S.length }, (_, i) => i);  // 0, 1, 2, ... 
 let idxTunes = 0;
+let idxImg = undefined;
+let intervalId;
 let audio;
 let containerWidth;
 let containerHeight;
@@ -23,7 +31,7 @@ function init() {
     const img = $(IMG);
 
     randomize(IMGS);
-    randomize(TUNES);
+    randomize(idxMp3s);
     setContainerSize();
     initControls();
 
@@ -34,28 +42,19 @@ function init() {
         start();
     });
 
+    $("#shuffle").on('click', function() {
+        shuffle(img);
+    });
+
     $(SECS).click(function() {
         clickSeconds();
     });
 
     $(SOUND).on('click', function() {
-        persistSound();
-        if (isSound()) {
-            audio = undefined;
-            if (isShowing(img)) {
-                playMp3(true);
-            }
-        }
-        else {
-            if (audio) {
-                audio.pause();
-                audio = undefined;
-            }
-        }
+        playMp3();
     });
 
     $(AUTO).on('click', function() {
-        persistAuto();
         if (isAuto()) {
             start();
         }
@@ -66,14 +65,7 @@ function init() {
     });
 
     $(document).keydown(function(event) {
-        if (event.key === "ArrowLeft" || event.keyCode === 37) {
-            stopAuto();
-            advance(false);
-        }
-        else if (event.key === "ArrowRight" || event.keyCode === 39) {
-            stopAuto();
-            advance(true);
-        }
+        keybaordHandler(event);
     });
 
     $(document).on('fullscreenchange', function() {
@@ -92,17 +84,84 @@ function init() {
     });
 }
 
+function keybaordHandler(event) {
+    if (event.key === "ArrowLeft" || event.keyCode === 37) {
+        stopAuto();
+        advance(false);
+    }
+    else if (event.key === "ArrowRight" || event.keyCode === 39) {
+        stopAuto();
+        advance(true);
+    }
+    else if (event.key.toLowerCase() === 'p') {  // slideshow pause/unpause
+        pause();
+    }
+    else if (event.key.toLowerCase() === 'a') {  // audio on/off
+        if (isSound()) {
+            pauseAudio();
+        }
+        else {
+            $(SOUND).prop('checked', true);
+            playMp3();
+        }
+    }
+    else if (event.key.toLowerCase() === 'n') {  // next tune
+        nextTune();
+    }
+}
+
+function shuffle(img) {
+    let sound = isSound();
+    stopShow();
+    img.hide();
+    idxImg = undefined;
+    idxTunes = 0;
+    randomize(IMGS);
+    randomize(idxMp3s);
+    setTune();
+    setTitle(' ');
+
+    if (audio) {
+        audio.src = currentTune();
+    }
+
+    $(SOUND).prop('checked', sound);
+}
+
 function changeTune() {
-    idxTunes = $(TUNE).val();
-    if (audio && !audio.paused) {
-        audio.pause();
-        audio = undefined;
-        playMp3();
+    let idx = Number($(TUNE).val());
+    for (var i = 0; i < idxMp3s.length; i++) {
+        if (idx === idxMp3s[i]) {
+            idxTunes = i;
+            break;
+        }
     }
-    if (audio && isSound()) {
+
+    setTune();
+
+    if (audio) {
         audio.pause();
-        audio = undefined;
+        audio.src = currentTune();
+        if (isSound()) {
+            audio.play();
+        }
     }
+}
+
+function pause() {
+    if (isAuto()) {
+        stopAuto();
+        pauseAudio();
+    }
+    else {
+        $(AUTO).prop('checked', true);
+        $(SOUND).prop('checked', true);
+        start();
+    }
+}
+
+function currentTune() {
+    return 'sounds/' + MP3S[idxMp3s[idxTunes]].name + '.mp3';
 }
 
 function clickSeconds() {
@@ -127,50 +186,30 @@ function initControls() {
         persistSeconds();
     }
 
-    let auto = localStorage.getItem(PERSIST_AUTO);
-    if (auto) {
-        $(AUTO).prop('checked', "true" === auto);
-    }
-    else {
-        persistAuto();
-    }
-
-    let sound = localStorage.getItem(PERSIST_SOUND);
-    if (sound) {
-        $(SOUND).prop('checked', "true" === sound);
-    }
-    else {
-        persistSound();
-    }
-
-    $("#auto").attr('title', IMGS.length + " photos");
-    initPicklist();
+    $("#autoText").attr('title', IMGS.length + " photos");
+    initTunesList();
 }
 
-function initPicklist() {
+function initTunesList() {
     var $tunes = $(TUNE);
 
-    for (var i = 0; i < TUNES.length; i++) {
-        var title = TUNES[i];
+    $tunes.empty();
+
+    for (var i = 0; i < MP3S.length; i++) {
+        var name = MP3S[i].name;
         let $opt = $('<option></option>');
         $opt.attr('value', i);
-        $opt.text(title);
+        $opt.attr('title', MP3S[i].info);
+        $opt.text(name);
         $tunes.append($opt);
     }
+
+    setTune();
 }
 
 function setTune() {
-    $(TUNE).val(idxTunes);
-}
-
-function persistSound() {
-    let checked = $(SOUND).prop('checked');
-    localStorage.setItem(PERSIST_SOUND, checked);
-}
-
-function persistAuto() {
-    let checked = $(AUTO).prop('checked');
-    localStorage.setItem(PERSIST_AUTO, checked);
+    $(TUNE).val(idxMp3s[idxTunes]);
+    $(TUNE).attr('title', MP3S[idxMp3s[idxTunes]].info);
 }
 
 function persistSeconds() {
@@ -191,7 +230,8 @@ function setContainerSize() {
         - $('#title').outerHeight(true) - MARGIN;
 }
 
-function isShowing(img) {
+function isShowing() {
+    const img = $(IMG);
     return img.is(':visible') && img.width() > 0 && img.height() > 0;
 }
 
@@ -200,7 +240,6 @@ function stopAuto() {
         clearInterval(intervalId);
         intervalId = undefined;
         $(AUTO).prop('checked', false);
-        persistAuto();
     }
 }
 
@@ -208,11 +247,16 @@ function stopShow() {
     clearInterval(intervalId);
     if (audio) {
         audio.pause();
-        $(SOUND).prop('checked', false);
     }
     $(AUTO).prop('checked', false);
     intervalId = undefined;
-    audio = undefined;
+}
+
+function pauseAudio() {
+    if (audio) {
+        audio.pause();
+    }
+    $(SOUND).prop('checked', false);
 }
 
 function start() {
@@ -284,25 +328,38 @@ function setTitle(text) {
     $('#title').text(text);
 }
 
-function playMp3(click) {  // https://audiotrimmer.com/
-    if (audio) {
-        if (audio.paused && click) {
+function playMp3() {  // https://audiotrimmer.com/
+    if (isSound() && isShowing()) {
+        if (audio) {
+            if (audio.paused) {
+                audio.play();
+            }
+        }
+        else {
+            audio = new Audio(currentTune());
             audio.play();
+            audio.onended = function() {
+                nextTune();
+            };
         }
     }
-    else {
-        audio = new Audio('sounds/' + TUNES[idxTunes] + '.mp3');
-        audio.volume = isSound() ? 1 : 0;
-        audio.play();
-        audio.onended = function() {
-            idxTunes++;
-            if (idxTunes >= TUNES.length) {
-                idxTunes = 0;
-            }
-            setTune();
-            audio = undefined;
-            playMp3();
-        };
+    else if (audio) {
+        audio.pause();
+    }
+}
+
+function nextTune() {
+    idxTunes++;
+    if (idxTunes >= MP3S.length) {
+        idxTunes = 0;
+    }
+    setTune();
+
+    if (audio) {
+        audio.src = currentTune();
+        if (isSound() && isShowing()) {
+            audio.play();
+        }
     }
 }
 

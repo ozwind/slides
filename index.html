@@ -20,16 +20,17 @@
 <body>
     <div id="header">
         <!-- https://unicode.org/charts/ -->
-        <button id="start" title="Show images, use arrow keys for next/previous, ESC to stop">&#x25B6;</button>
+        <button id="start" title="Full screen slideshow.  Arrow keys for next/previous, ESC to stop">&#x25B6;</button>
         <span id="seconds" title="Click to set number of seconds for each image (1-9)">3</span>
+        <button id="shuffle" title="Shuffle images and tunes">&#x29D7;</button>
         <div id="auto">
-            <label class="switch">
-                <input type="checkbox" id="cbAuto" checked>
+            <label class="switch" title="Press 'P' to play/pause slideshow">
+                <input type="checkbox" id="cbAuto">
                 <span class="slider round"></span>
             </label>
             <div id="autoText">Slideshow</div>
         </div>
-        <div id="sound">
+        <div id="sound" title="Press 'A' for audio on/off,  'N' for next tune">
             <label class="switch">
                 <input type="checkbox" id="cbSound" checked>
                 <span class="slider round"></span>
@@ -37,7 +38,7 @@
             <div id="soundText">Audio</div>
         </div>
         <select id="tunes" class="picklist"></select>
-        <span id="release">Release 2024-Jul-10</span>
+        <span id="release" title="By Cliff Hewitt">Release 2024-Jul-19</span>
     </div>
 
     <div id="imgContainer">
